@@ -195,6 +195,7 @@ Logs             |
 Future iterations may include:
 
 - Unit tests
+- More Tests 
 - Jenkins CI pipeline
 - Automated Docker image builds
 - Amazon ECR image storage
