@@ -1,18 +1,20 @@
-# Go build output
-watchdog
-bin/
-dist/
+# Compiled binary
+/watchdog
+
+# Build output
+/bin/
+/dist/
 
 # Logs
 *.log
 
-# IDE/editor
+# Environment files
+.env
+
+# IDE
 .vscode/
 .idea/
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Environment files
-.env
