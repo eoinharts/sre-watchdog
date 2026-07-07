@@ -13,6 +13,19 @@ pipeline {
             }
         }
 
+        stage('Set Image Tag') {
+            steps {
+                script {
+                    env.IMAGE_TAG = sh(
+                        script: 'git rev-parse --short HEAD',
+                        returnStdout: true
+                    ).trim()
+                }
+
+                echo "Image tag: ${env.IMAGE_TAG}"
+            }
+        }
+
         stage('Go Test') {
             steps {
                 sh '''
@@ -41,7 +54,7 @@ pipeline {
             steps {
                 sh '''
                     docker build \
-                      -t sre-watchdog:${BUILD_NUMBER} \
+                      -t sre-watchdog:${IMAGE_TAG} \
                       .
                 '''
             }
@@ -50,15 +63,12 @@ pipeline {
 
     post {
         success {
-            echo 'SRE Watchdog pipeline completed successfully'
+            echo "Pipeline completed successfully"
+            echo "Built image: sre-watchdog:${IMAGE_TAG}"
         }
 
         failure {
-            echo 'SRE Watchdog pipeline failed'
-        }
-
-        always {
-            echo "Build number: ${BUILD_NUMBER}"
+            echo 'Pipeline failed'
         }
     }
 }
