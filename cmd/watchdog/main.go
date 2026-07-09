@@ -91,9 +91,8 @@ func startMetricsServer() {
 	}()
 }
 
-func checkEndpoint(client *http.Client, targetURL string) {
+func checkEndpoint(client *http.Client, targetURL string) bool {
 	start := time.Now()
-
 	checksTotal.Inc()
 
 	resp, err := client.Get(targetURL)
@@ -111,7 +110,8 @@ func checkEndpoint(client *http.Client, targetURL string) {
 			duration.Milliseconds(),
 			err,
 		)
-		return
+
+		return false
 	}
 
 	defer resp.Body.Close()
@@ -132,6 +132,8 @@ func checkEndpoint(client *http.Client, targetURL string) {
 		duration.Milliseconds(),
 		isUp,
 	)
+
+	return isUp
 }
 
 func getCheckInterval() time.Duration {
